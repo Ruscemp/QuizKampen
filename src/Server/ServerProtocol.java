@@ -13,6 +13,8 @@ class ServerProtocol {
         if (state == BEFORE_INIT) {
             theOutput = "CONNECTED \nInput: ";
             state = WAITING_FOR_REQUEST;
+        } else if (state == WAITING_FOR_REQUEST) {
+
         }
         return theOutput;
     }
