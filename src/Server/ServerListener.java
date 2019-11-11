@@ -12,6 +12,7 @@ public class ServerListener {
                 final Socket socketToClient = serverSocket.accept();
                 Server clientHandler = new Server(socketToClient);
                 clientHandler.start();
+                System.out.println("Client connected to server!");
             } catch (IOException e) {
                 e.printStackTrace();
             }
