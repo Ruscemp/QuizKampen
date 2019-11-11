@@ -24,6 +24,7 @@ public class Server extends Thread{
         ) {
             String inputLine, outputLine;
             out.println("CONNECTED");
+            out.println("Input: ");
 
 
         }
