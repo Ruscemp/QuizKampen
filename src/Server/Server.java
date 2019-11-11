@@ -10,7 +10,7 @@ public class Server extends Thread{
 
     private Socket clientSocket;
 
-    public Server(Socket clientSocket) throws IOException {
+    Server(Socket clientSocket) {
         this.clientSocket = clientSocket;
     }
 
@@ -20,13 +20,16 @@ public class Server extends Thread{
                 PrintWriter out =
                         new PrintWriter(clientSocket.getOutputStream(), true);
                 BufferedReader in = new BufferedReader(
-                        new InputStreamReader(clientSocket.getInputStream()));
+                        new InputStreamReader(clientSocket.getInputStream()))
         ) {
             String inputLine, outputLine;
-            out.println("CONNECTED");
-            out.println("Input: ");
 
+            ServerProtocol protocol = new ServerProtocol();
+            out.println(protocol.processInput(null));
 
+            while ((inputLine = in.readLine()) != null){
+                out.println(protocol.processInput(inputLine));
+            }
         }
         catch (Exception e){
             e.printStackTrace();
