@@ -10,5 +10,5 @@ public enum Categories {
         return super.toString().toLowerCase();
 
     }
-
+ public void getCategories(){}
 }
