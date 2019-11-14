@@ -9,12 +9,11 @@ class ServerProtocol {
     Object processInput(String theInput){
         Object theOutput = null;
 
-
         if (state == BEFORE_INIT) {
-            theOutput = "CONNECTED \nInput: ";
+            theOutput = "CONNECTED";
             state = WAITING_FOR_REQUEST;
         } else if (state == WAITING_FOR_REQUEST) {
-
+            theOutput = "Client: " + theInput;
         }
         return theOutput;
     }
