@@ -10,7 +10,6 @@ public class ServerListener {
 
         Categories[] EnumCategories = Categories.values();
         QuestionsCards QC=new QuestionsCards();
-        QC.allQuestions
 
         try (ServerSocket serverSocket = new ServerSocket(12345)) {
             while (true) {
@@ -37,5 +36,6 @@ public class ServerListener {
         }
         return isTwoPlayersConnected;
     }
+
 }
 

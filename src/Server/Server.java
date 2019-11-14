@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 
-public class Server extends Thread {
+public class Server extends Thread{
 
     private Socket clientSocket;
     private Socket clientSocket2;
@@ -27,16 +27,17 @@ public class Server extends Thread {
 
         ) {
             String inputLine;
+            QuestionsCards QC = new QuestionsCards();
 
 //                       Question question = new Question("Bilar", "Vart har Volvo sitt ursprung?", "Kina", "Africa", "Sverige", "Nord Korea");
 
-            ServerProtocol protocol = new ServerProtocol();
+//            ServerProtocol protocol = new ServerProtocol();
 //            out.println(protocol.processInput(null));
 
             try {
                 while (true) {
 
-                        out.writeObject(question);
+                        out.writeObject(QC.allQuestions.get(1));
 
                     while ((inputLine = in.readLine()) != null) {
 
