@@ -1,50 +1,60 @@
 package Client;
 
-import java.io.*;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import GUI.MainMenu.MenuController;
+import GUI.SinglePlayerMenu.Single_GameMenuController;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
-public class Client {
+import java.util.ArrayList;
 
-    Client() {
-        String hostName = "localhost";
-        int portNumber = 12345;
+public class Client extends Application {
+    public static ArrayList<Thread> threads = new ArrayList<>(3);
+    Stage window;
+    Scene menu, single;
+    private Pane menuPane, singlePane;
+    public Single_GameMenuController controller2;
+    public MenuController controller1;
 
-        try (
-                Socket addressSocket = new Socket(hostName,
-                        portNumber);
-                PrintWriter out = new PrintWriter(addressSocket.getOutputStream(), true);
-                ObjectInputStream in = new ObjectInputStream(addressSocket.getInputStream())
-        ) {
-            Object fromServer;
-            String fromUser;
-            BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-
-            while ((fromServer = in.readObject()) != null) {
-                //objectToQuestion = fromServer;
-                System.out.println(fromServer.toString());
-
-                fromUser = stdIn.readLine();
-                if (fromUser != null) {
-                    out.println(fromUser);
-                }
-            }
-        } catch (UnknownHostException e) {
-            System.err.println("Don't know about host " + hostName);
-            System.exit(1);
-        } catch (IOException e) {
-            System.err.println("Couldn't get I/O for the connection to " +
-                    hostName);
-            System.exit(1);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     public static void main(String[] args) {
-        Client c = new Client();
+        launch(args);
     }
 
+    @Override
+    public void start(Stage primaryStage) throws Exception{
+        window = primaryStage;
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Client.class.getResource("../GUI/MainMenu/Menu.fxml"));
+        menuPane = loader.load();
+        controller1 = loader.getController();
+
+        loader = new FXMLLoader();
+        loader.setLocation(Client.class.getResource("../GUI/SinglePlayerMenu/Single_GameMenu.fxml"));
+        singlePane = loader.load();
+        controller2 = loader.getController();
+
+        Scene menu = new Scene(menuPane);
+        Scene single = new Scene(singlePane);
+
+
+        controller1.setScene2(single);
+        controller1.setMain(this);
+        controller2.setScene1(menu);
+        controller2.setMain(this);
+
+        threads.add(0, Thread.currentThread());
+        controller2.setSingleGameMenuThreads();
+
+        window.setScene(menu);
+        window.setTitle("Scene!");
+        window.show();
+    }
+
+    public void setScene(Scene scene){
+        window.setScene(scene);
+    }
 }
 
