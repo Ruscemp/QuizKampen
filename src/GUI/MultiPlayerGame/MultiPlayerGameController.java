@@ -1,4 +1,4 @@
-package GUI.SinglePlayerMenu;
+package GUI.MultiPlayerGame;
 
 import Client.Client;
 import Client.Game;
@@ -9,10 +9,11 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 
 import java.util.ArrayList;
 
-public class Single_GameMenuController {
+public class MultiPlayerGameController {
 
     public Label display;
     public Label total;
@@ -29,17 +30,21 @@ public class Single_GameMenuController {
     public Button Category2Button;
     public Button Category3Button;
     public Button Category4Button;
+    public ListView PlayersList;
+    public ListView PlayerPointsList;
+    public Label Cur_Cat;
+    public Label Cur_CatNumbers;
 
-    private Scene mainMenu;
+    private Scene menu;
     private Client client;
-    private ArrayList<Button> disabledCategories = new ArrayList<>();
+    private ArrayList<Button> disabledCategories = new ArrayList<Button>();
 
 
     public void setClient(Client client){
         this.client = client;
     }
-    public void setMainMenu(Scene mainMenu){
-        this.mainMenu = mainMenu;
+    public void setMenu(Scene menu){
+        this.menu = menu;
     }
 
     @FXML
@@ -47,7 +52,7 @@ public class Single_GameMenuController {
         if (Client.threads.get(1).isAlive()){
             Client.threads.get(1).interrupt();
         }
-        client.setScene(mainMenu);
+        client.setScene(menu);
     }
 
     public void answer(ActionEvent event) {
@@ -82,7 +87,7 @@ public class Single_GameMenuController {
     }
 
     public void exit(ActionEvent event) {
-        Client.threads.get(3).start();
+        Client.threads.get(2).start();
     }
 
     private void correct(){
@@ -134,6 +139,10 @@ public class Single_GameMenuController {
         allowAnswers();
     }
 
+    private void exit() {
+        System.exit(0);
+    }
+
     private void nextQuestion() {
         try {
             String text = display.getText();
@@ -180,7 +189,7 @@ public class Single_GameMenuController {
         display.setText(startText);
     }
 
-    public void setSingleGameMenuThreads(){
-        Client.threads.add(1, new Thread(this::nextQuestion));
+    public void setMultiGameMenuThreads(){
+        Client.threads.add(2, new Thread(this::nextQuestion));
     }
 }
