@@ -180,7 +180,7 @@ public class Single_GameMenuController {
         display.setText(startText);
     }
 
-    public void setSingleGameMenuThreads(){
+    public void setSingleGameThreads(){
         Client.threads.add(1, new Thread(this::nextQuestion));
     }
 }

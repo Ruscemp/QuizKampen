@@ -1,4 +1,4 @@
-package GUI.MainMenu;
+package GUI.MenuFiles;
 
 import Client.Client;
 import javafx.event.ActionEvent;
@@ -9,10 +9,10 @@ import javafx.scene.control.Button;
 public class MenuController {
     private Scene SinglePlayerScene;
     private Scene MultiPlayerMenuScene;
-    private Client MainMenuScene;
+    private Client client;
 
-    public void setMainMenuScene(Client mainMenuScene){
-        this.MainMenuScene = mainMenuScene;
+    public void setClient(Client client){
+        this.client = client;
     }
     public void setSinglePlayerScene(Scene SinglePlayerScene){
         this.SinglePlayerScene = SinglePlayerScene;
@@ -30,13 +30,13 @@ public class MenuController {
 
     @FXML
     protected void handleSingleplayerButtonAction(ActionEvent event) {
-        MainMenuScene.SingleGameController.initializeGameScene();
-        MainMenuScene.setScene(SinglePlayerScene);
+        client.SingleGameController.initializeGameScene();
+        client.setScene(SinglePlayerScene);
     }
 
     @FXML
     protected void handleMultiplayerButtonAction(ActionEvent event) {
-        MainMenuScene.setScene(MultiPlayerMenuScene);
+        client.setScene(MultiPlayerMenuScene);
     }
 
     @FXML

@@ -5,12 +5,12 @@ import Client.Game;
 import Client.Question;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class MultiPlayerGameController {
@@ -21,7 +21,6 @@ public class MultiPlayerGameController {
     public Label wrong;
     public Button ExitButton;
     public Button MainMenuButton;
-    public Button NewGameButton;
     public Button Answer1Button;
     public Button Answer2Button;
     public Button Answer3Button;
@@ -34,8 +33,9 @@ public class MultiPlayerGameController {
     public ListView PlayerPointsList;
     public Label Cur_Cat;
     public Label Cur_CatNumbers;
+    public Button BeginButton;
 
-    private Scene menu;
+    private Scene menu, mainMenu;
     private Client client;
     private ArrayList<Button> disabledCategories = new ArrayList<Button>();
 
@@ -46,14 +46,7 @@ public class MultiPlayerGameController {
     public void setMenu(Scene menu){
         this.menu = menu;
     }
-
-    @FXML
-    public void goBack(){
-        if (Client.threads.get(1).isAlive()){
-            Client.threads.get(1).interrupt();
-        }
-        client.setScene(menu);
-    }
+    public void setMainMenu(Scene mainMenu){ this.mainMenu = mainMenu; }
 
     public void answer(ActionEvent event) {
         if(((Button)event.getSource()).getText().equalsIgnoreCase(Game.getCorrectAnswer())){
@@ -63,7 +56,7 @@ public class MultiPlayerGameController {
         }
         total.setText(String.valueOf(Integer.parseInt(total.getText())+1));
         display.setText(display.getText()+"\n\n\nCorrect Answer was "+Game.getCorrectAnswer());
-        Client.threads.get(1).start();
+        Client.threads.get(2).start();
     }
 
     public void category(ActionEvent event) {
@@ -73,21 +66,8 @@ public class MultiPlayerGameController {
         setQuestionOnDiplay(Game.getCurrentQuestion());
     }
 
-    public void newGame(ActionEvent event) {
-        if (Client.threads.get(1).isAlive()){
-            Client.threads.get(1).interrupt();
-        }
-        NewGameButton.setText("New Game");
-        total.setText("0");
-        right.setText("0");
-        wrong.setText("0");
-        display.setText("Select question category from list to the right");
-        disabledCategories.removeAll(disabledCategories);
-        allowCategories();
-    }
-
     public void exit(ActionEvent event) {
-        Client.threads.get(2).start();
+        Client.threads.get(3).start();
     }
 
     private void correct(){
@@ -165,7 +145,7 @@ public class MultiPlayerGameController {
         } catch (InterruptedException e){
             System.out.println("Next Question Thread is interrupted!");
         }
-        Client.threads.set(1, new Thread(this::nextQuestion));
+        Client.threads.set(2, new Thread(this::nextQuestion));
     }
 
     private void sleep(int i) throws InterruptedException {
@@ -189,7 +169,34 @@ public class MultiPlayerGameController {
         display.setText(startText);
     }
 
-    public void setMultiGameMenuThreads(){
+    public void setMultiGameThreads(){
         Client.threads.add(2, new Thread(this::nextQuestion));
+    }
+
+    public void goBackToMultiMenu(ActionEvent event) {
+        if (Client.threads.get(2).isAlive()){
+            Client.threads.get(2).interrupt();
+        }
+        client.setScene(menu);
+    }
+
+    public void goBackToMainMenu(ActionEvent event) {
+        if (Client.threads.get(2).isAlive()){
+            Client.threads.get(2).interrupt();
+        }
+        client.setScene(mainMenu);
+    }
+
+    public void beginGame(ActionEvent event) {
+        if (Client.threads.get(2).isAlive()){
+            Client.threads.get(2).interrupt();
+        }
+        BeginButton.setText("Begin");
+        total.setText("0");
+        right.setText("0");
+        wrong.setText("0");
+        display.setText("Select question category from list to the right");
+        disabledCategories.removeAll(disabledCategories);
+        allowCategories();
     }
 }
