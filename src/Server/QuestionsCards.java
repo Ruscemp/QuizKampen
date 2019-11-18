@@ -22,17 +22,12 @@ public class QuestionsCards {
     public QuestionsCards() {
 
 
-        //Skapar Question objekt och sätter egenskaper via konstruktorn.
-        Question Q1 = new Question("Vad heter Sveriges huvudstad", new String[]{"Budapest", "Stockholm", "Belgrad", "Kattby"}, "Stockholm", Categories.GEOGRAPHY);
-        Question Q2 = new Question("Vilka katter är sötast?", new String[]{"Budapest", "", "Brittisk korthår", "Kattby"}, "Brittisk korthår", Categories.NATURE);
-        Question Q3 = new Question("Vad heter Hollands huvudstad", new String[]{"Budapest", "Stockholm", "Amsterdam", "Kattby"}, "Amsterdam", Categories.GEOGRAPHY);
-        Question Q4 = new Question("Vad heter de äckliga orangea pommesen?", new String[]{"Budapest", "Sötpommes", "Belgrad", "Kattby"}, "Sötpommes", Categories.NATURE);
-
         //Lägger till alla Questions i en Arraylist.
-        allQuestions.add(Q1);
-        allQuestions.add(Q2);
-        allQuestions.add(Q3);
-        allQuestions.add(Q4);
+        allQuestions.add(new Question("Vad heter Englands huvudstad?", "Stockholm", "Birmingham", "Seoul", "London", Categories.GEOGRAPHY));
+        allQuestions.add(new Question("Vilken är den populäraste Sushi biten?", "Räka", "Avokado", "Smörfisk", "Lax", Categories.FOOD));
+        allQuestions.add(new Question("Vad står DIF för?", "Djungelns Idrotts Förening", "Dildo I Fickan", "Dinosaurier Inomhus Forever", "Djurgårdens Idrotts Förening", Categories.SPORT));
+        allQuestions.add(new Question("Har Trump en peruk?", "Nej", "Nej", "Nej", "JA!", Categories.POLITICS));
+        allQuestions.add(new Question("Vad äter Myrslokar?", "Människor", "Fransmän", "Vego", "Myror", Categories.NATURE));
     }
 
 
@@ -50,6 +45,4 @@ public class QuestionsCards {
         Collections.shuffle(questionsByCategory);
         return questionsByCategory;
     }
-
-
 }

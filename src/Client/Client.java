@@ -2,7 +2,7 @@ package Client;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.UnknownHostException;
+
 
 public class Client {
 
@@ -13,30 +13,28 @@ public class Client {
         try (
                 Socket addressSocket = new Socket(hostName,
                         portNumber);
-                PrintWriter out = new PrintWriter(addressSocket.getOutputStream(), true);
-                ObjectInputStream in = new ObjectInputStream(addressSocket.getInputStream())
+                ObjectInputStream in = new ObjectInputStream(addressSocket.getInputStream());
+                PrintWriter out = new PrintWriter(addressSocket.getOutputStream(), true)
         ) {
             Object fromServer;
             String fromUser;
-            BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
 
-            while ((fromServer = in.readObject()) != null) {
+            while (true) {
+                fromServer = in.readObject();
                 //objectToQuestion = fromServer;
                 System.out.println(fromServer.toString());
 
+                BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
                 fromUser = stdIn.readLine();
                 if (fromUser != null) {
                     out.println(fromUser);
                 }
             }
-        } catch (UnknownHostException e) {
-            System.err.println("Don't know about host " + hostName);
-            System.exit(1);
+
         } catch (IOException e) {
-            System.err.println("Couldn't get I/O for the connection to " +
-                    hostName);
+            e.printStackTrace();
             System.exit(1);
-        } catch (ClassNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -46,5 +44,5 @@ public class Client {
         Client c = new Client();
     }
 
-}
 
+}

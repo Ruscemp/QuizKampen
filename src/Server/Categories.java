@@ -12,5 +12,7 @@ public enum Categories {
         return super.toString().toLowerCase();
 
     }
- public void getCategories(){}
+    public static Categories getRandom() {
+        return values()[(int) (Math.random() * values().length)];
+    }
 }
