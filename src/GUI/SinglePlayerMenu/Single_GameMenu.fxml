@@ -155,8 +155,8 @@
                            <children>
                               <Button fx:id="Category1Button" mnemonicParsing="false" onAction="#category" prefHeight="90.0" prefWidth="100.0" text="Geography" />
                               <Button fx:id="Category2Button" layoutX="10.0" layoutY="36.0" mnemonicParsing="false" onAction="#category" prefHeight="90.0" prefWidth="100.0" text="Nature" />
-                              <Button fx:id="Category3Button" layoutX="10.0" layoutY="126.0" mnemonicParsing="false" onAction="#category" prefHeight="90.0" prefWidth="100.0" text="Category 3" />
-                              <Button fx:id="Category4Button" layoutX="10.0" layoutY="216.0" mnemonicParsing="false" onAction="#category" prefHeight="90.0" prefWidth="100.0" text="Category 4" />
+                              <Button fx:id="Category3Button" layoutX="10.0" layoutY="126.0" mnemonicParsing="false" onAction="#category" prefHeight="90.0" prefWidth="100.0" text="Politics" />
+                              <Button fx:id="Category4Button" layoutX="10.0" layoutY="216.0" mnemonicParsing="false" onAction="#category" prefHeight="90.0" prefWidth="100.0" text="Sport" />
                            </children>
                         </VBox>
                      </children>

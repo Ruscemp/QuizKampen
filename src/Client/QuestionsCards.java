@@ -1,7 +1,8 @@
 package Client;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.*;
 
 public class QuestionsCards {
 
@@ -9,17 +10,38 @@ public class QuestionsCards {
 
     public QuestionsCards() {
 
-        //Skapar Question objekt och sätter egenskaper via konstruktorn.
-        Question Q1 = new Question("Vad heter Sveriges huvudstad", new String[]{"Budapest", "Stockholm", "Belgrad", "Kattby"}, "Stockholm", Categories.GEOGRAPHY);
-        Question Q2 = new Question("Vilka katter är sötast?", new String[]{"Budapest", "", "Brittisk korthår", "Kattby"}, "Brittisk korthår", Categories.NATURE);
-        Question Q3 = new Question("Vad heter Hollands huvudstad", new String[]{"Budapest", "Stockholm", "Amsterdam", "Kattby"}, "Amsterdam", Categories.GEOGRAPHY);
-        Question Q4 = new Question("Vad heter de äckliga orangea pommesen?", new String[]{"Budapest", "Sötpommes", "Belgrad", "Kattby"}, "Sötpommes", Categories.NATURE);
+        Properties p = new Properties();
 
-        //Lägger till alla Questions i en Arraylist.
-        allQuestions.add(Q1);
-        allQuestions.add(Q2);
-        allQuestions.add(Q3);
-        allQuestions.add(Q4);
+        try {
+            p.load(new FileInputStream("src/Client/Question.properties"));
+            Enumeration keys = p.keys();
+            while (keys.hasMoreElements()) {
+                String key = (String) keys.nextElement();
+                String value = p.getProperty(key);
+                String[] questionsFromProp = value.split(";");
+
+                String pCategory = questionsFromProp[6];
+
+                try {
+                    Categories pCategoryFromEnum = Categories.valueOf(pCategory);
+                    String pQuestion = questionsFromProp[0];
+                    String pAlternative1 = questionsFromProp[1];
+                    String pAlternative2 = questionsFromProp[2];
+                    String pAlternative3 = questionsFromProp[3];
+                    String pAlternative4 = questionsFromProp[4];
+                    String pCorrectAnswer = questionsFromProp[5];
+
+                    allQuestions.add(new Question(pQuestion,new String[]{pAlternative1,pAlternative2,pAlternative3,pAlternative4},pCorrectAnswer, pCategoryFromEnum));
+                }
+                catch (Exception e){
+                    System.out.println("Category " + pCategory + " is not valid");
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 
