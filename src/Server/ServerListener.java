@@ -8,15 +8,18 @@ public class ServerListener {
 
     public static void main(String[] args) {
 
-        try (ServerSocket serverSocket = new ServerSocket(12345)) {
+        try (ServerSocket serverSocket = new ServerSocket(33332)) {
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 Socket clientSocket2 = serverSocket.accept();
-
-                if (clientSocket.isConnected() && clientSocket2.isConnected()) {
-                    Server server = new Server(clientSocket, clientSocket2);
-                   // System.out.println("Two clients connected to server!");
-                }
+                ClientHandler player1handler = new ClientHandler(clientSocket);
+                ClientHandler player2handler = new ClientHandler(clientSocket2);
+                player1handler.setOpponent(player2handler);
+                player2handler.setOpponent(player1handler);
+                System.out.println("All players connected");
+                player1handler.start();
+                player2handler.start();
+                Server server = new Server(player1handler, player2handler);
             }
         } catch (IOException e) {
             e.printStackTrace();

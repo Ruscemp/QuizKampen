@@ -2,7 +2,7 @@ package Server;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Scanner;
+import java.util.List;
 
 public class QuestionsCards {
 
@@ -28,11 +28,15 @@ public class QuestionsCards {
         allQuestions.add(new Question("Vad står DIF för?", "Djungelns Idrotts Förening", "Dildo I Fickan", "Dinosaurier Inomhus Forever", "Djurgårdens Idrotts Förening", Categories.SPORT));
         allQuestions.add(new Question("Har Trump en peruk?", "Nej", "Nej", "Nej", "JA!", Categories.POLITICS));
         allQuestions.add(new Question("Vad äter Myrslokar?", "Människor", "Fransmän", "Vego", "Myror", Categories.NATURE));
+        allQuestions.add(new Question("Vilken är den populäraste Sushi biten?", "Räka", "Avokado", "Smörfisk", "Lax", Categories.FOOD));
+        allQuestions.add(new Question("Vilken är den populäraste Sushi biten?", "Räka", "Avokado", "Smörfisk", "Lax", Categories.FOOD));
+        allQuestions.add(new Question("Vilken är den populäraste Sushi biten?", "Räka", "Avokado", "Smörfisk", "Lax", Categories.FOOD));
+
     }
 
 
     //Metod
-    protected ArrayList<Question> getQuestionCardsByCategory(String categoryFromUser) {
+    protected List<Question> getQuestionCardsByCategory(String categoryFromUser) {
         ArrayList<Question> questionsByCategory = new ArrayList<Question>();
 
         // Loopar igenom alla frågor och jämför sedan om inputen för kategorin=kategorin för frågorna. Om sant så lägger de till frågorna från den kategorin i questionsByCategory.

@@ -1,7 +1,5 @@
 package Server;
 
-import Server.Categories;
-
 import java.io.Serializable;
 
 public class Question implements Serializable {
