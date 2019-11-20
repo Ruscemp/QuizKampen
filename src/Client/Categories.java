@@ -5,7 +5,8 @@ public enum Categories {
     NATURE,
     POLITICS,
     SPORT,
-    FOOD;
+    FOOD,
+    ALLMÄNT;
 
     @Override
     public String toString() {

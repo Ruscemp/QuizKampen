@@ -1,5 +1,9 @@
 package Server;
 
+import Client.Categories;
+import Client.Question;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Server extends Thread {
@@ -8,7 +12,6 @@ public class Server extends Thread {
     private boolean player1Turn;
     private boolean player2Turn;
     private boolean gameOver;
-    Question question;
 
     Server(ClientHandler player1, ClientHandler player2) {
         this.player1 = player1;
@@ -16,20 +19,22 @@ public class Server extends Thread {
         player1.setPlayerTurnTrue();
         player2.setPlayerTurnFalse();
 
+        //Varför finns dessa get questions? alltså numer Categories.Food
         while (!gameOver) {
             if (player1.yourTurn) {
-                player1.receiveQuestionFromServer(getQuestion("food"));
+                player1.receiveQuestionFromServer(getQuestion(Categories.FOOD));
             }
            if (player2.yourTurn) {
-               player2.receiveQuestionFromServer(getQuestion("food"));
+               player2.receiveQuestionFromServer(getQuestion(Categories.FOOD));
            }
         }
-
     }
 
-    public List<Question> getQuestion(String category) {
+
+    public ArrayList<Question> getQuestion(Categories category) {
+        //HÄr skall en sout göras för att visa fel.
         QuestionsCards qc = new QuestionsCards();
-        return qc.getQuestionCardsByCategory(category);
+        return (ArrayList<Question>) qc.getQuestionCardsByCategory(category);
 
     }
 }

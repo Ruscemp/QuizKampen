@@ -1,6 +1,8 @@
 package Server;
 
-import Client.Client;
+import Client.Categories;
+import Client.Question;
+import jdk.jfr.Category;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,12 +10,14 @@ import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
+import java.security.spec.ECField;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClientHandler extends Thread {
     private Socket player;
     private Server server;
-    private List<Question> questionListFromServer;
+    ArrayList<Client.Question> questionListFromServer = new ArrayList<Question>();
     boolean yourTurn;
     private ClientHandler opponent;
     boolean chooseCategory = true;
@@ -37,6 +41,9 @@ public class ClientHandler extends Thread {
                 while (true) {
                     while (yourTurn) {
                         if (chooseCategory) {
+
+                            //Fixa uppläsning från Enum (Categories) Loopa genom enum-listan och printa alla alternativ.
+                            //Vi vill inte ha det hårdkodat som nu.
                             out.writeObject("Choose Category" + '\n' +
                                     "Politics" + '\n' +
                                     "Food" + '\n' +
@@ -44,12 +51,13 @@ public class ClientHandler extends Thread {
                                     "Geography" + '\n' +
                                     "Sport");
                             inputLine = in.readLine();
-                            if (inputLine.equalsIgnoreCase("Politics")
-                                    || inputLine.equalsIgnoreCase("Food")
-                                    || inputLine.equalsIgnoreCase("Nature")
-                                    || inputLine.equalsIgnoreCase("Geography")
-                                    || inputLine.equalsIgnoreCase("Sport")) {
-                                question = getQuestion(inputLine);
+
+                            //Gör jämförelsen mot ENUM istället för mot if satsen som gick igenom hårdkodade kategorier.
+                            try {
+                                Client.Categories CategoryFromEnum = Categories.valueOf(inputLine.toUpperCase());
+                                question = getQuestion(CategoryFromEnum);
+                            }catch (Exception e) {
+                                System.out.println("Incorrect");
                             }
                         }
                         for (int i = 0; i < 2; i++) {
@@ -92,7 +100,7 @@ public class ClientHandler extends Thread {
 
     }
 
-    public void receiveQuestionFromServer(List<Question> questionList) {
+    public void receiveQuestionFromServer(ArrayList<Client.Question> questionList) {
         questionListFromServer = questionList;
     }
 
@@ -112,7 +120,7 @@ public class ClientHandler extends Thread {
         this.server = server;
     }
 
-    public Question getQuestion(String category) {
+    public Client.Question getQuestion(Categories category) {
         QuestionsCards qc = new QuestionsCards();
         return qc.getQuestionCardsByCategory(category).get(0);
 

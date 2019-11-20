@@ -1,26 +1,23 @@
 package Client;
 
+
 import java.io.Serializable;
 
 public class Question implements Serializable {
     //Instansvariabler
-    protected String question;
-    protected String answer1;
-    protected String answer2;
-    protected String answer3;
-    protected String correctAnswer;
-    protected Categories category;
+    public String question;
+    public String[] alternativeAnswers;
+    public String correctAnswer;
+    public Categories category;
 
-    public Question(String question, String answer1, String answer2, String answer3, String correctAnswer, Categories category) {
-        this.question = question;
-        this.answer1 = answer1;
-        this.answer2 = answer2;
-        this.answer3 = answer3;
-        this.correctAnswer = correctAnswer;
-        this.category = category;
+
+    //Konstruktor
+    public Question(String question,String[]alternativeAnswers,String correctAnswer,Categories category){
+        setQuestion(question);
+        setAlternativeAnswers(alternativeAnswers);
+        setCorrectAnswer(correctAnswer);
+        setCategory(category);
     }
-//Konstruktor
-
 
     //Getters & Setters
     public String getQuestion() {
@@ -29,6 +26,14 @@ public class Question implements Serializable {
 
     public void setQuestion(String question) {
         this.question = question;
+    }
+
+    public String[] getAlternativeAnswers() {
+        return alternativeAnswers;
+    }
+
+    public void setAlternativeAnswers(String[] alternativeAnswers) {
+        this.alternativeAnswers = alternativeAnswers;
     }
 
     public String getCorrectAnswer() {
@@ -50,9 +55,12 @@ public class Question implements Serializable {
     public String toString() {
         return this.category + ": " +
                 this.question + " " +
-                this.answer1 + " " +
-                this.answer2 + " " +
-                this.answer3 + " " +
+                this.alternativeAnswers[0] + " " +
+                this.alternativeAnswers[1] + " " +
+                this.alternativeAnswers[2] + " " +
+                this.alternativeAnswers[3] + " " +
+                this.correctAnswer + " " +
                 this.correctAnswer;
     }
 }
+
