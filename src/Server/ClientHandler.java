@@ -25,6 +25,7 @@ public class ClientHandler extends Thread {
     Question question;
     BufferedReader in;
     ObjectOutputStream out;
+    String category;
 
 
     ClientHandler(Socket player) throws IOException {
@@ -41,17 +42,18 @@ public class ClientHandler extends Thread {
             while (true) {
                 while (yourTurn) {
                     if (chooseCategory) {
-                        String category = sendCategories();
-                        sendQuestion(category);
+                        category = sendCategories();
                     }
+                    opponent.category = category;
+                    sendQuestion(category);
                     startQuiz();
                     chooseCategory = false;
                     opponent.chooseCategory = false;
-                yourTurn = false;
-                opponent.yourTurn = true;
-                break;
+                    yourTurn = false;
+                    opponent.yourTurn = true;
+                    break;
                 }
-            Thread.sleep(1000);
+                Thread.sleep(1000);
             }
 //                        opponent.chooseCategory = false;
         } catch (InterruptedException ex) {
@@ -133,11 +135,11 @@ public class ClientHandler extends Thread {
         }
     }
 
-    public void setChooseCategoryTrue(){
+    public void setChooseCategoryTrue() {
         chooseCategory = true;
     }
 
-    public void setChooseCategoryFalse(){
+    public void setChooseCategoryFalse() {
         chooseCategory = false;
     }
 }
