@@ -12,6 +12,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.security.spec.ECField;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 public class ClientHandler extends Thread {
@@ -41,18 +42,15 @@ public class ClientHandler extends Thread {
                 while (true) {
                     while (yourTurn) {
                         if (chooseCategory) {
+                            String Category="";
+                            for  (Categories c: Categories.values())
 
-                            //Fixa uppläsning från Enum (Categories) Loopa genom enum-listan och printa alla alternativ.
-                            //Vi vill inte ha det hårdkodat som nu.
-                            out.writeObject("Choose Category" + '\n' +
-                                    "Politics" + '\n' +
-                                    "Food" + '\n' +
-                                    "Nature" + '\n' +
-                                    "Geography" + '\n' +
-                                    "Sport");
-                            inputLine = in.readLine();
+                            {
+                                Category=Category+c+System.lineSeparator();
+                            }
+                            out.writeObject(Category);
+                            inputLine=in.readLine();
 
-                            //Gör jämförelsen mot ENUM istället för mot if satsen som gick igenom hårdkodade kategorier.
                             try {
                                 Client.Categories CategoryFromEnum = Categories.valueOf(inputLine.toUpperCase());
                                 question = getQuestion(CategoryFromEnum);
