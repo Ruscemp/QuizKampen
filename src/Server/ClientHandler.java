@@ -12,7 +12,6 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.security.spec.ECField;
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
 
 public class ClientHandler extends Thread {
@@ -24,82 +23,43 @@ public class ClientHandler extends Thread {
     boolean chooseCategory = true;
     private int score;
     Question question;
+    BufferedReader in;
+    ObjectOutputStream out;
 
 
-    ClientHandler(Socket player) {
+    ClientHandler(Socket player) throws IOException {
         this.player = player;
+        in = new BufferedReader(
+                new InputStreamReader(player.getInputStream()));
+        out = new ObjectOutputStream(player.getOutputStream());
     }
 
     @Override
     public void run() {
-        try (
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(player.getInputStream()));
-                ObjectOutputStream out = new ObjectOutputStream(player.getOutputStream());
-        ) {
-            String inputLine;
-            try {
-                while (true) {
-                    while (yourTurn) {
-                        if (chooseCategory) {
-                            String Category="";
-                            for  (Categories c: Categories.values())
 
-                            {
-                                Category=Category+c+System.lineSeparator();
-                            }
-                            out.writeObject(Category);
-                            inputLine=in.readLine();
-
-                            try {
-                                Client.Categories CategoryFromEnum = Categories.valueOf(inputLine.toUpperCase());
-                                question = getQuestion(CategoryFromEnum);
-                            }catch (Exception e) {
-                                System.out.println("Incorrect");
-                            }
-                        }
-                        for (int i = 0; i < 2; i++) {
-                            System.out.println("New turn");
-//                        Question question = new Question("vem är du?", "han", "hon",
-//                                "den", "jag", Categories.FOOD);
-//                           Question questionToSend = questionListFromServer.get(i);
-                            out.writeObject(question);
-                            inputLine = in.readLine();
-                            System.out.println(inputLine);
-                            if (inputLine.equalsIgnoreCase(question.correctAnswer)) {
-                                System.out.println("Correct");
-                                score++;
-                            } else {
-                                System.out.println("Wrong");
-                            }
-                            chooseCategory = false;
-                            yourTurn = false;
-                        }
-                            break;
+        try {
+            while (true) {
+                while (yourTurn) {
+                    if (chooseCategory) {
+                        String category = sendCategories();
+                        sendQuestion(category);
                     }
-//                        opponent.chooseCategory = false;
-                        opponent.yourTurn = true;
-                        Thread.sleep(1000);
+                    startQuiz();
+                    chooseCategory = false;
+                    opponent.chooseCategory = false;
+                yourTurn = false;
+                opponent.yourTurn = true;
+                break;
                 }
-
-            } catch (SocketException e) {
-                e.printStackTrace();
-                System.out.println("Socket Exception: " + e.getMessage());
-
-            } catch (Exception e) {
-                System.out.println("Exception: " + e.getMessage());
-                e.printStackTrace();
+            Thread.sleep(1000);
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("IOException: " + e.getMessage());
+//                        opponent.chooseCategory = false;
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
 
-    }
-
-    public void receiveQuestionFromServer(ArrayList<Client.Question> questionList) {
-        questionListFromServer = questionList;
     }
 
     public void setPlayerTurnTrue() {
@@ -114,14 +74,71 @@ public class ClientHandler extends Thread {
         this.opponent = opponent;
     }
 
-    public void setServer(Server server){
-        this.server = server;
-    }
 
     public Client.Question getQuestion(Categories category) {
         QuestionsCards qc = new QuestionsCards();
         return qc.getQuestionCardsByCategory(category).get(0);
 
+    }
+
+    public String sendCategories() throws IOException {
+        //Fixa uppläsning från Enum (Categories) Loopa genom enum-listan och printa alla alternativ.
+        //Vi vill inte ha det hårdkodat som nu.
+//        opponent.sendMessage("Waiting for player to choose category");
+
+        out.writeObject("Choose Category" + '\n' +
+                "Politics" + '\n' +
+                "Food" + '\n' +
+                "Nature" + '\n' +
+                "Geography" + '\n' +
+                "Sport");
+        return in.readLine();
+
+
+        //Gör jämförelsen mot ENUM istället för mot if satsen som gick igenom hårdkodade kategorier.
+    }
+
+    public void sendQuestion(String category) {
+
+        try {
+            Client.Categories CategoryFromEnum = Categories.valueOf(category.toUpperCase());
+            question = getQuestion(CategoryFromEnum);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendMessage(String s) {
+        try {
+            out.writeObject(s);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void startQuiz() throws IOException {
+        String inputLine;
+        for (int i = 0; i < 2; i++) {
+            System.out.println("New turn");
+            out.writeObject(question);
+            inputLine = in.readLine();
+            System.out.println(inputLine);
+            if (inputLine.equalsIgnoreCase(question.correctAnswer)) {
+                System.out.println("Correct");
+                score++;
+            } else {
+                System.out.println("Wrong");
+            }
+            chooseCategory = false;
+        }
+    }
+
+    public void setChooseCategoryTrue(){
+        chooseCategory = true;
+    }
+
+    public void setChooseCategoryFalse(){
+        chooseCategory = false;
     }
 }
 

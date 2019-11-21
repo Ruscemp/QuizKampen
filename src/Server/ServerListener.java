@@ -8,12 +8,11 @@ public class ServerListener {
 
     public static void main(String[] args) {
 
-        try (ServerSocket serverSocket = new ServerSocket(33332)) {
+        try (ServerSocket serverSocket = new ServerSocket(11111)) {
             while (true) {
-                Socket clientSocket = serverSocket.accept();
-                Socket clientSocket2 = serverSocket.accept();
-                ClientHandler player1handler = new ClientHandler(clientSocket);
-                ClientHandler player2handler = new ClientHandler(clientSocket2);
+
+                ClientHandler player1handler = new ClientHandler(serverSocket.accept());
+                ClientHandler player2handler = new ClientHandler(serverSocket.accept());
                 player1handler.setOpponent(player2handler);
                 player2handler.setOpponent(player1handler);
                 System.out.println("All players connected");
@@ -27,3 +26,18 @@ public class ServerListener {
     }
 }
 
+/*
+---> Socket = väntar på godkänd anslutning till servern
+---> Socket 2 = väntar också på godkännande till servern
+
+---> Sout("Alla spelare är anslutnga");
+---> Thread(() -> new Game(socket 1, socket2)).start();
+---> Game.java implements Runnable
+    public Game(Socket p1, Socket p2){
+    Settings settings = new Settings();
+    player1.setOpponent(p2);
+    player2.setOpponent(p1);
+    totalQuestionsForEachRound = settings.getProperty("questions");
+    totalRoundsForGame = settings.getProperties("rounds");
+    }
+ */

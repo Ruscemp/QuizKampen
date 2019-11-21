@@ -8,7 +8,7 @@ public class Client {
 
     Client() {
         String hostName = "localhost";
-        int portNumber = 33332;
+        int portNumber = 11111;
 
         try (
                 Socket addressSocket = new Socket(hostName,
@@ -19,8 +19,7 @@ public class Client {
             Object fromServer;
             String fromUser;
 
-            while (true) {
-                fromServer = in.readObject();
+            while ((fromServer = in.readObject())!=null) {
                 System.out.println(fromServer.toString());
 
                 BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));

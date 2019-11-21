@@ -20,14 +20,14 @@ public class Server extends Thread {
         player2.setPlayerTurnFalse();
 
         //Varför finns dessa get questions? alltså numer Categories.Food
-        while (!gameOver) {
-            if (player1.yourTurn) {
-                player1.receiveQuestionFromServer(getQuestion(Categories.FOOD));
-            }
-           if (player2.yourTurn) {
-               player2.receiveQuestionFromServer(getQuestion(Categories.FOOD));
-           }
-        }
+//        while (!gameOver) {
+//            if (player1.yourTurn) {
+//                player1.receiveQuestionFromServer(getQuestion(Categories.FOOD));
+//            }
+//            if (player2.yourTurn) {
+//                player2.receiveQuestionFromServer(getQuestion(Categories.FOOD));
+//            }
+//        }
     }
 
 
