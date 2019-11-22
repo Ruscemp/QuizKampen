@@ -95,20 +95,21 @@ public class ClientHandler extends Thread {
     }
 
     public String sendCategories() throws IOException {
-        //Fixa uppläsning från Enum (Categories) Loopa genom enum-listan och printa alla alternativ.
-        //Vi vill inte ha det hårdkodat som nu.
-//        opponent.sendMessage("Waiting for player to choose category");
 
-        out.writeObject("Choose Category" + '\n' +
+        String Category="";
+        for  (Categories c: Categories.values()) {
+            Category=Category+c+System.lineSeparator();
+        }
+        out.writeObject(Category);
+        return in.readLine();
+      /*  out.writeObject("Choose Category" + '\n' +
                 "Politics" + '\n' +
                 "Food" + '\n' +
                 "Nature" + '\n' +
                 "Geography" + '\n' +
-                "Sport");
-        return in.readLine();
+                "Sport");*/
+        //return in.readLine();
 
-
-        //Gör jämförelsen mot ENUM istället för mot if satsen som gick igenom hårdkodade kategorier.
     }
 
     public List<Question> getQuestionList(String category) {
