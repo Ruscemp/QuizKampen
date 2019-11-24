@@ -11,8 +11,8 @@ public class ServerListener {
         try (ServerSocket serverSocket = new ServerSocket(11111)) {
             while (true) {
 
-                ClientHandler player1handler = new ClientHandler(serverSocket.accept());
-                ClientHandler player2handler = new ClientHandler(serverSocket.accept());
+                ClientHandler player1handler = new ClientHandler(serverSocket.accept(),0);
+                ClientHandler player2handler = new ClientHandler(serverSocket.accept(), 1);
                 player1handler.setOpponent(player2handler);
                 player2handler.setOpponent(player1handler);
                 System.out.println("All players connected");

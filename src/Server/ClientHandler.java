@@ -16,20 +16,23 @@ import java.util.List;
 
 public class ClientHandler extends Thread {
     private Socket player;
-    private Server server;
-    ArrayList<Client.Question> questionListFromServer = new ArrayList<Question>();
+    List<Question> questionList = new ArrayList<Question>();
     boolean yourTurn;
     private ClientHandler opponent;
+    private int counterChooseCategory;
     boolean chooseCategory = true;
     private int score;
-    Question question;
+    private int numberOfRounds = 1;
+    private int numberOfQuestions = 3;
+    boolean gameOver;
     BufferedReader in;
     ObjectOutputStream out;
     String category;
 
 
-    ClientHandler(Socket player) throws IOException {
+    ClientHandler(Socket player, int counterChooseCategory) throws IOException {
         this.player = player;
+        this.counterChooseCategory = counterChooseCategory;
         in = new BufferedReader(
                 new InputStreamReader(player.getInputStream()));
         out = new ObjectOutputStream(player.getOutputStream());
@@ -43,26 +46,34 @@ public class ClientHandler extends Thread {
                 while (yourTurn) {
                     if (chooseCategory) {
                         category = sendCategories();
+                        getQuestionList(category);
                     }
-                    opponent.category = category;
-                    sendQuestion(category);
+                    opponent.setQuestionList(questionList);
                     startQuiz();
-                    chooseCategory = false;
-                    opponent.chooseCategory = false;
-                    yourTurn = false;
-                    opponent.yourTurn = true;
+                    counterChooseCategory++;
+                    numberOfRounds--;
+                    if (numberOfRounds == 0) {
+                        this.gameOver = true;
+                        System.out.println("GameOver");
+                    }
+                    if (counterChooseCategory == 2 && !gameOver) {
+                        chooseCategory = true;
+                        counterChooseCategory = 0;
+                        continue;
+                    }
+                    opponentsTurn();
                     break;
                 }
-                Thread.sleep(1000);
+            Thread.sleep(1000);
             }
-//                        opponent.chooseCategory = false;
+
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
     }
+
 
     public void setPlayerTurnTrue() {
         this.yourTurn = true;
@@ -77,37 +88,39 @@ public class ClientHandler extends Thread {
     }
 
 
-    public Client.Question getQuestion(Categories category) {
+    public List<Question> getQuestion(Categories category) {
         QuestionsCards qc = new QuestionsCards();
-        return qc.getQuestionCardsByCategory(category).get(0);
+        return qc.getQuestionCardsByCategory(category);
 
     }
 
     public String sendCategories() throws IOException {
-        //Fixa uppläsning från Enum (Categories) Loopa genom enum-listan och printa alla alternativ.
-        //Vi vill inte ha det hårdkodat som nu.
-//        opponent.sendMessage("Waiting for player to choose category");
 
-        out.writeObject("Choose Category" + '\n' +
+        String Category="";
+        for  (Categories c: Categories.values()) {
+            Category=Category+c+System.lineSeparator();
+        }
+        out.writeObject(Category);
+        return in.readLine();
+      /*  out.writeObject("Choose Category" + '\n' +
                 "Politics" + '\n' +
                 "Food" + '\n' +
                 "Nature" + '\n' +
                 "Geography" + '\n' +
-                "Sport");
-        return in.readLine();
+                "Sport");*/
+        //return in.readLine();
 
-
-        //Gör jämförelsen mot ENUM istället för mot if satsen som gick igenom hårdkodade kategorier.
     }
 
-    public void sendQuestion(String category) {
+    public List<Question> getQuestionList(String category) {
 
         try {
-            Client.Categories CategoryFromEnum = Categories.valueOf(category.toUpperCase());
-            question = getQuestion(CategoryFromEnum);
+            Categories CategoryFromEnum = Categories.valueOf(category.toUpperCase());
+            questionList = getQuestion(CategoryFromEnum);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return questionList;
     }
 
     private void sendMessage(String s) {
@@ -120,18 +133,18 @@ public class ClientHandler extends Thread {
 
     public void startQuiz() throws IOException {
         String inputLine;
-        for (int i = 0; i < 2; i++) {
+        chooseCategory = false;
+        for (int i = 0; i < numberOfQuestions; i++) {
             System.out.println("New turn");
-            out.writeObject(question);
+            out.writeObject(questionList.get(i));
             inputLine = in.readLine();
             System.out.println(inputLine);
-            if (inputLine.equalsIgnoreCase(question.correctAnswer)) {
+            if (inputLine.equalsIgnoreCase(questionList.get(i).correctAnswer)) {
                 System.out.println("Correct");
                 score++;
             } else {
                 System.out.println("Wrong");
             }
-            chooseCategory = false;
         }
     }
 
@@ -141,6 +154,21 @@ public class ClientHandler extends Thread {
 
     public void setChooseCategoryFalse() {
         chooseCategory = false;
+    }
+
+    public void setQuestionList(List<Question> questionList) {
+        this.questionList = questionList;
+    }
+
+    public void opponentsTurn() {
+        chooseCategory = false;
+        opponent.chooseCategory = false;
+        yourTurn = false;
+        opponent.yourTurn = true;
+    }
+
+    public int sendScorePoints(){
+        return score;
     }
 }
 
