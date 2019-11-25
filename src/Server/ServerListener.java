@@ -3,6 +3,7 @@ package Server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class ServerListener {
 
@@ -10,7 +11,6 @@ public class ServerListener {
 
         try (ServerSocket serverSocket = new ServerSocket(11111)) {
             while (true) {
-
                 ClientHandler player1handler = new ClientHandler(serverSocket.accept(),0);
                 ClientHandler player2handler = new ClientHandler(serverSocket.accept(), 1);
                 player1handler.setOpponent(player2handler);
