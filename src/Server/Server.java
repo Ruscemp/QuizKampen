@@ -19,7 +19,7 @@ public class Server extends Thread {
         player2.setPlayerTurnFalse();
 
         while (true) {
-            System.out.println("game in progress");
+//            System.out.println("game in progress");
             if (player1.gameOver && player2.gameOver) {
                 System.out.println("SERVER: GAME OVER");
                 player1.setPlayerTurnFalse();

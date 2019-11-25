@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class SwingGUI {
-    private JPanel panelMain;
+    public JPanel panelMain;
     private JButton button1;
     private JButton button2;
     private JButton button3;
@@ -20,10 +20,10 @@ public class SwingGUI {
 
     private Question question;
 
-    public SwingGUI() {
-//        setQuestion();
+    public SwingGUI(String s) {
 
-        button1.setText("blabla");
+
+        button1.setText(s);
 
         button1.addActionListener(new ActionListener() {
             @Override
@@ -60,9 +60,18 @@ public class SwingGUI {
 //        return question;
 //    }
 
-    public static void main(String[] args) {
+//    public static void main(String[] args) {
+//        JFrame frame = new JFrame("Quizkampen");
+//        frame.setContentPane(new SwingGUI().panelMain);
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+////        frame.pack();
+//        frame.setSize(500, 500);
+//        frame.setVisible(true);
+//    }
+
+    public void startGui() {
         JFrame frame = new JFrame("Quizkampen");
-        frame.setContentPane(new SwingGUI().panelMain);
+        frame.setContentPane(new SwingGUI("hej").panelMain);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //        frame.pack();
         frame.setSize(500, 500);

@@ -38,7 +38,7 @@ public class Question implements Serializable {
     }
 
     public String getCorrectAnswer() {
-        return correctAnswer;
+        return this.correctAnswer;
     }
 
     public void setCorrectAnswer(String correctAnswer) {

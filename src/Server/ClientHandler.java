@@ -3,6 +3,7 @@ package Server;
 import Client.Categories;
 import Client.Question;
 import jdk.jfr.Category;
+import Server.SwingGUI;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -134,8 +135,15 @@ public class ClientHandler extends Thread {
     public void startQuiz() throws IOException {
         String inputLine;
         chooseCategory = false;
+
+        SwingGUI gui = new SwingGUI("hej igen");
+        gui.startGui();
+
         for (int i = 0; i < numberOfQuestions; i++) {
             System.out.println("New turn");
+            // --------------------
+            System.out.println(questionList.get(i));
+            // -------------------
             out.writeObject(questionList.get(i));
             inputLine = in.readLine();
             System.out.println(inputLine);
