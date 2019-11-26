@@ -2,15 +2,12 @@ package Server;
 
 import Client.Categories;
 import Client.Question;
-import jdk.jfr.Category;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.SocketException;
-import java.security.spec.ECField;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,21 +22,21 @@ public class ClientHandler extends Thread {
     private int numberOfRounds;
     private int numberOfQuestions;
     boolean gameOver;
+    boolean roundOver;
     BufferedReader in;
     ObjectOutputStream out;
     String category;
-
+    String inputLine;
 
     ClientHandler(Socket player, int counterChooseCategory) throws IOException {
-        GameOptions gameOptions=new GameOptions();
-        numberOfRounds=gameOptions.rounds;
-        numberOfQuestions=gameOptions.xQuestions;
+        GameOptions gameOptions = new GameOptions();
+        numberOfRounds = gameOptions.rounds;
+        numberOfQuestions = gameOptions.xQuestions;
         this.player = player;
         this.counterChooseCategory = counterChooseCategory;
         in = new BufferedReader(
                 new InputStreamReader(player.getInputStream()));
         out = new ObjectOutputStream(player.getOutputStream());
-
     }
 
     @Override
@@ -53,12 +50,9 @@ public class ClientHandler extends Thread {
                         getQuestionList(category);
                     }
                     opponent.setQuestionList(questionList);
-                    startQuiz();
-                    counterChooseCategory++;
-                    numberOfRounds--;
+                    startQuestionRound();
                     if (numberOfRounds == 0) {
                         this.gameOver = true;
-                        System.out.println("GameOver");
                     }
                     if (counterChooseCategory == 2 && !gameOver) {
                         chooseCategory = true;
@@ -68,7 +62,7 @@ public class ClientHandler extends Thread {
                     opponentsTurn();
                     break;
                 }
-            Thread.sleep(1000);
+                Thread.sleep(1000);
             }
 
         } catch (InterruptedException ex) {
@@ -92,42 +86,33 @@ public class ClientHandler extends Thread {
     }
 
 
-    public List<Question> getQuestion(Categories category) {
+    public List<Question> getQuestions(Categories category) {
         QuestionsCards qc = new QuestionsCards();
         return qc.getQuestionCardsByCategory(category);
 
     }
 
     public String sendCategories() throws IOException {
-
-        String Category="";
-        for  (Categories c: Categories.values()) {
-            Category=Category+c+System.lineSeparator();
+        String Category = "";
+        for (Categories c : Categories.values()) {
+            Category = Category + c + System.lineSeparator();
         }
         out.writeObject(Category);
         return in.readLine();
-      /*  out.writeObject("Choose Category" + '\n' +
-                "Politics" + '\n' +
-                "Food" + '\n' +
-                "Nature" + '\n' +
-                "Geography" + '\n' +
-                "Sport");*/
-        //return in.readLine();
-
     }
 
     public List<Question> getQuestionList(String category) {
 
         try {
             Categories CategoryFromEnum = Categories.valueOf(category.toUpperCase());
-            questionList = getQuestion(CategoryFromEnum);
+            questionList = getQuestions(CategoryFromEnum);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return questionList;
     }
 
-    private void sendMessage(String s) {
+    public void sendMessage(String s) {
         try {
             out.writeObject(s);
         } catch (IOException e) {
@@ -135,29 +120,20 @@ public class ClientHandler extends Thread {
         }
     }
 
-    public void startQuiz() throws IOException {
-        String inputLine;
+    public void startQuestionRound() throws IOException, InterruptedException {
         chooseCategory = false;
+
         for (int i = 0; i < numberOfQuestions; i++) {
-            System.out.println("New turn");
             out.writeObject(questionList.get(i));
             inputLine = in.readLine();
             System.out.println(inputLine);
             if (inputLine.equalsIgnoreCase(questionList.get(i).correctAnswer)) {
-                System.out.println("Correct");
                 score++;
-            } else {
-                System.out.println("Wrong");
             }
         }
-    }
-
-    public void setChooseCategoryTrue() {
-        chooseCategory = true;
-    }
-
-    public void setChooseCategoryFalse() {
-        chooseCategory = false;
+        roundOver = true;
+        numberOfRounds--;
+        counterChooseCategory++;
     }
 
     public void setQuestionList(List<Question> questionList) {
@@ -171,7 +147,7 @@ public class ClientHandler extends Thread {
         opponent.yourTurn = true;
     }
 
-    public int sendScorePoints(){
+    public int sendScorePoints() {
         return score;
     }
 }
