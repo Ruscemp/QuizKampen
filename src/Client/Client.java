@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.Collections;
 
 
 public class Client extends JFrame {
@@ -62,6 +64,11 @@ public class Client extends JFrame {
                 }
                 else {
                     split = fromServer.toString().split("\n");
+                    Collections.shuffle(Arrays.asList(split));
+                    button1.setText(split[2]);
+                    button2.setText(split[3]);
+                    button3.setText(split[4]);
+                    button4.setText(split[5]);
                 }
 
                 BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
