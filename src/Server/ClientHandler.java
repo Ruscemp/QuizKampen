@@ -23,8 +23,8 @@ public class ClientHandler extends Thread {
     private int counterChooseCategory;
     boolean chooseCategory = true;
     private int score;
-    private int numberOfRounds = 1;
-    private int numberOfQuestions = 3;
+    private int numberOfRounds;
+    private int numberOfQuestions;
     boolean gameOver;
     BufferedReader in;
     ObjectOutputStream out;
@@ -32,11 +32,15 @@ public class ClientHandler extends Thread {
 
 
     ClientHandler(Socket player, int counterChooseCategory) throws IOException {
+        GameOptions gameOptions=new GameOptions();
+        numberOfRounds=gameOptions.rounds;
+        numberOfQuestions=gameOptions.xQuestions;
         this.player = player;
         this.counterChooseCategory = counterChooseCategory;
         in = new BufferedReader(
                 new InputStreamReader(player.getInputStream()));
         out = new ObjectOutputStream(player.getOutputStream());
+
     }
 
     @Override
