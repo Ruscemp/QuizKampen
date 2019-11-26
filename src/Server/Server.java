@@ -17,9 +17,11 @@ public class Server extends Thread {
         this.player2 = player2;
         player1.setPlayerTurnTrue();
         player2.setPlayerTurnFalse();
+    }
 
+    @Override
+    public void run() {
         while (true) {
-//            System.out.println("game in progress");
             if (player1.gameOver && player2.gameOver) {
                 System.out.println("SERVER: GAME OVER");
                 player1.setPlayerTurnFalse();
@@ -43,7 +45,6 @@ public class Server extends Thread {
             }
         }
     }
-
 
     public ArrayList<Question> getQuestion(Categories category) {
         //HÄr skall en sout göras för att visa fel.
