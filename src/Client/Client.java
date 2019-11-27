@@ -75,8 +75,8 @@ public class Client extends JFrame implements ActionListener, Runnable {
             disableButtons();
             while ((fromServer = in.readObject()) != null) {
                 System.out.println(fromServer.toString());
-                enableButtons();
                 if (fromServer.toString().contains(";")) {
+                    enableButtons();
                     split = fromServer.toString().split(";");
                     questionArea.setText(split[1]);
                     button1.setText(split[2]);
@@ -93,6 +93,7 @@ public class Client extends JFrame implements ActionListener, Runnable {
                     disableButtons();
                     questionArea.setText("Opponents turn\nWait!");
                 } else {
+                    enableButtons();
                     split = fromServer.toString().split("\n");
                     Collections.shuffle(Arrays.asList(split));
                     questionArea.setText("Choose Category");

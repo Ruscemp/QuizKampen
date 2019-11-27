@@ -31,11 +31,11 @@ public class Server extends Thread {
         player1Score = player1.sendScorePoints();
         player2Score = player2.sendScorePoints();
         calculateRoundScore(player1Score, player2Score);
-         player1.sendMessage(roundScore);
-         player2.sendMessage(roundScore);
-         player1.roundOver = false;
-         player2.roundOver = false;
-         roundScore = "";
+        player1.sendMessage(roundScore);
+        player2.sendMessage(roundScore);
+        player1.roundOver = false;
+        player2.roundOver = false;
+        roundScore = "";
     }
 
     public void gameIsOver() {
