@@ -1,7 +1,5 @@
 package Server;
 
-import Client.Categories;
-import Client.Question;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,14 +32,12 @@ public class ClientHandler extends Thread {
         numberOfQuestions = gameOptions.xQuestions;
         this.player = player;
         this.counterChooseCategory = counterChooseCategory;
-        in = new BufferedReader(
-                new InputStreamReader(player.getInputStream()));
+        in = new BufferedReader(new InputStreamReader(player.getInputStream()));
         out = new ObjectOutputStream(player.getOutputStream());
     }
 
     @Override
     public void run() {
-
         try {
             while (true) {
                 while (yourTurn) {
@@ -93,11 +89,12 @@ public class ClientHandler extends Thread {
     }
 
     public String sendCategories() throws IOException {
-        String Category = "";
+        StringBuilder Category = new StringBuilder();
         for (Categories c : Categories.values()) {
-            Category = Category + c + System.lineSeparator();
+            Category.append(c).append(System.lineSeparator());
         }
-        out.writeObject(Category);
+        out.writeObject(Category.toString());
+        System.out.println("Sedning: "+Category.toString());
         return in.readLine();
     }
 
@@ -120,11 +117,14 @@ public class ClientHandler extends Thread {
         }
     }
 
-    public void startQuestionRound() throws IOException, InterruptedException {
+    public void startQuestionRound() throws IOException {
         chooseCategory = false;
 
         for (int i = 0; i < numberOfQuestions; i++) {
+            System.out.println("Sending questionList");
             out.writeObject(questionList.get(i));
+            System.out.println("Getting input");
+            String s;
             inputLine = in.readLine();
             System.out.println(inputLine);
             if (inputLine.equalsIgnoreCase(questionList.get(i).correctAnswer)) {

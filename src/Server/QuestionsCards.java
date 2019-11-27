@@ -1,8 +1,5 @@
 package Server;
 
-import Client.Categories;
-import Client.Question;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
@@ -10,7 +7,7 @@ import java.util.*;
 public class QuestionsCards {
 
 
-    ArrayList<Client.Question> allQuestions = new ArrayList<Client.Question>();
+    ArrayList<Question> allQuestions = new ArrayList<Question>();
 
     public QuestionsCards() {
 
@@ -27,7 +24,7 @@ public class QuestionsCards {
                 String pCategory = questionsFromProp[6];
 
                 try {
-                    Client.Categories pCategoryFromEnum = Categories.valueOf(pCategory);
+                    Categories pCategoryFromEnum = Categories.valueOf(pCategory);
                     String pQuestion = questionsFromProp[0];
                     String pAlternative1 = questionsFromProp[1];
                     String pAlternative2 = questionsFromProp[2];
@@ -35,7 +32,7 @@ public class QuestionsCards {
                     String pAlternative4 = questionsFromProp[4];
                     String pCorrectAnswer = questionsFromProp[5];
 
-                    allQuestions.add(new Client.Question(pQuestion,new String[]{pAlternative1,pAlternative2,pAlternative3,pAlternative4},pCorrectAnswer, pCategoryFromEnum));
+                    allQuestions.add(new Question(pQuestion,new String[]{pAlternative1,pAlternative2,pAlternative3,pAlternative4},pCorrectAnswer, pCategoryFromEnum));
                 }
                 catch (Exception e){
                     //System.out.println("Category " + pCategory + " is not valid");
@@ -50,8 +47,8 @@ public class QuestionsCards {
 
 
     //Metod
-    protected List<Client.Question> getQuestionCardsByCategory(Categories categoryFromUser) {
-        ArrayList<Client.Question> questionsByCategory = new ArrayList<>();
+    protected List<Question> getQuestionCardsByCategory(Categories categoryFromUser) {
+        ArrayList<Question> questionsByCategory = new ArrayList<>();
 
         // Loopar igenom alla frågor och jämför sedan om inputen för kategorin=kategorin för frågorna. Om sant så lägger de till frågorna från den kategorin i questionsByCategory.
         for (int i = 0; i < allQuestions.size(); i++) {

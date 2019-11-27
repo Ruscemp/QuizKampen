@@ -51,6 +51,7 @@ public class Client extends JFrame implements ActionListener {
         questionPanel.setPreferredSize(new Dimension(400, 400));
         questionArea.setEditable(false);
         questionArea.setPreferredSize(new Dimension(380, 200));
+        questionArea.setText("Waiting for opponent");
 
         buttonList.add(button1);
         buttonList.add(button2);
@@ -60,8 +61,7 @@ public class Client extends JFrame implements ActionListener {
         addActionListener();
 
         try {
-            Socket addressSocket = new Socket(hostName,
-                    portNumber);
+            Socket addressSocket = new Socket(hostName, portNumber);
             in = new ObjectInputStream(addressSocket.getInputStream());
             out = new PrintWriter(addressSocket.getOutputStream(), true);
 
@@ -87,6 +87,7 @@ public class Client extends JFrame implements ActionListener {
                 else {
                     split = fromServer.toString().split("\n");
                     Collections.shuffle(Arrays.asList(split));
+                    questionArea.setText("Choose Category");
                     button1.setText(split[2]);
                     button2.setText(split[3]);
                     button3.setText(split[4]);
@@ -111,9 +112,7 @@ public class Client extends JFrame implements ActionListener {
 
     public void addActionListener() {
         for (JButton button : buttonList) {
-            button.addActionListener(l -> {
-                out.println(button.getText());
-            });
+            button.addActionListener(l -> out.println(button.getText().trim()));
         }
     }
 
