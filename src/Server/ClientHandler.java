@@ -59,6 +59,7 @@ public class ClientHandler extends Thread {
                     opponentsTurn();
                     break;
                 }
+                out.writeObject("END");
                 Thread.sleep(1000);
             }
 

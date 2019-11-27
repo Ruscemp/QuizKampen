@@ -72,8 +72,10 @@ public class Client extends JFrame implements ActionListener, Runnable {
             Object fromServer;
             String fromUser;
 
+            disableButtons();
             while ((fromServer = in.readObject()) != null) {
                 System.out.println(fromServer.toString());
+                enableButtons();
                 if (fromServer.toString().contains(";")) {
                     split = fromServer.toString().split(";");
                     questionArea.setText(split[1]);
@@ -87,8 +89,10 @@ public class Client extends JFrame implements ActionListener, Runnable {
                     scoreLabel.setText(fromServer.toString());
                     questionPanel.updateUI();
                     buttonPanel.updateUI();
-                }
-                else {
+                }else if(fromServer.toString().equals("END")) {
+                    disableButtons();
+                    questionArea.setText("Opponents turn\nWait!");
+                } else {
                     split = fromServer.toString().split("\n");
                     Collections.shuffle(Arrays.asList(split));
                     questionArea.setText("Choose Category");
@@ -134,6 +138,19 @@ public class Client extends JFrame implements ActionListener, Runnable {
                 }
             });
         }
+    }
+
+    private void enableButtons(){
+        button1.setEnabled(true);
+        button2.setEnabled(true);
+        button3.setEnabled(true);
+        button4.setEnabled(true);
+    }
+    private void disableButtons(){
+        button1.setEnabled(false);
+        button2.setEnabled(false);
+        button3.setEnabled(false);
+        button4.setEnabled(false);
     }
 
     private void changeColor(ActionEvent actionEvent) {
