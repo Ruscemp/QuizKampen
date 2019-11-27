@@ -77,7 +77,10 @@ public class Client extends JFrame implements ActionListener {
                     button2.setText(split[3]);
                     button3.setText(split[4]);
                     button4.setText(split[5]);
-                } else {
+                } else if (fromServer.toString().contains(":")){
+                    scoreLabel.setText(fromServer.toString());
+                }
+                else {
                     split = fromServer.toString().split("\n");
                     Collections.shuffle(Arrays.asList(split));
                     button1.setText(split[2]);
