@@ -53,13 +53,13 @@ public class Question implements Serializable {
 
     @Override
     public String toString() {
-        return this.category + "," +
-                this.question + "," +
-                this.alternativeAnswers[0] + "," +
-                this.alternativeAnswers[1] + "," +
-                this.alternativeAnswers[2] + "," +
-                this.alternativeAnswers[3] + "," +
-                this.correctAnswer + "," +
+        return this.category + ";" +
+                this.question + ";" +
+                this.alternativeAnswers[0] + ";" +
+                this.alternativeAnswers[1] + ";" +
+                this.alternativeAnswers[2] + ";" +
+                this.alternativeAnswers[3] + ";" +
+                this.correctAnswer + ";" +
                 this.correctAnswer;
     }
 }

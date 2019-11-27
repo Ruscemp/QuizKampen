@@ -70,8 +70,8 @@ public class Client extends JFrame implements ActionListener {
 
             while ((fromServer = in.readObject()) != null) {
                 System.out.println(fromServer.toString());
-                if (fromServer.toString().contains(",")) {
-                    split = fromServer.toString().split(",");
+                if (fromServer.toString().contains(";")) {
+                    split = fromServer.toString().split(";");
                     questionArea.setText(split[1]);
                     button1.setText(split[2]);
                     button2.setText(split[3]);

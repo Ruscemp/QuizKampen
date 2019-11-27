@@ -34,6 +34,7 @@ public class ClientHandler extends Thread {
         this.counterChooseCategory = counterChooseCategory;
         in = new BufferedReader(new InputStreamReader(player.getInputStream()));
         out = new ObjectOutputStream(player.getOutputStream());
+        score = 0;
     }
 
     @Override
@@ -122,13 +123,15 @@ public class ClientHandler extends Thread {
 
         for (int i = 0; i < numberOfQuestions; i++) {
             System.out.println("Sending questionList");
+            System.out.println(questionList.get(i));
             out.writeObject(questionList.get(i));
             System.out.println("Getting input");
             String s;
             inputLine = in.readLine();
             System.out.println(inputLine);
-            if (inputLine.equalsIgnoreCase(questionList.get(i).correctAnswer)) {
+            if (inputLine.trim().equalsIgnoreCase(questionList.get(i).correctAnswer.trim())) {
                 score++;
+                System.out.println("Score +\nScore: "+score);
             }
         }
         roundOver = true;
