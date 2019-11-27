@@ -18,7 +18,7 @@ public class Server extends Thread {
     @Override
     public void run() {
         while (true) {
-            System.out.println("Game in Progress");
+            //System.out.println("Game in Progress");
             if (player1.roundOver && player2.roundOver)
                 roundIsOver();
             if (player1.gameOver && player2.gameOver)

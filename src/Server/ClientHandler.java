@@ -102,7 +102,6 @@ public class ClientHandler extends Thread {
     }
 
     public List<Question> getQuestionList(String category) {
-
         try {
             Categories CategoryFromEnum = Categories.valueOf(category.toUpperCase());
             questionList = getQuestions(CategoryFromEnum);
@@ -125,6 +124,7 @@ public class ClientHandler extends Thread {
 
         for (int i = 0; i < numberOfQuestions; i++) {
             out.writeObject(questionList.get(i));
+            System.out.println(questionList.get(i) + " hej baso");
             inputLine = in.readLine();
             System.out.println(inputLine);
             if (inputLine.equalsIgnoreCase(questionList.get(i).correctAnswer)) {

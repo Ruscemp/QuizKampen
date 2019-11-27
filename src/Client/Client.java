@@ -2,14 +2,19 @@ package Client;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.*;
 import java.net.Socket;
 import java.util.Arrays;
 import java.util.Collections;
 
 
-public class Client extends JFrame {
+public class Client extends JFrame implements ActionListener {
     String[] split;
+    JFrame frame =new JFrame();
     JPanel panelMain = new JPanel();
     JPanel questionPanel = new JPanel();
     JButton button1 = new JButton();
@@ -20,6 +25,8 @@ public class Client extends JFrame {
     JTextArea questionArea = new JTextArea();
     JTextArea scoreLabel = new JTextArea();
 
+    String toServer;
+    PrintWriter out;
 
     Client() {
         String hostName = "localhost";
@@ -31,25 +38,31 @@ public class Client extends JFrame {
         setVisible(true);
         questionPanel.add(questionArea);
         questionPanel.add(scoreLabel);
+        button1.addActionListener(this);
+        button2.addActionListener(this);
+        button3.addActionListener(this);
+        button4.addActionListener(this);
+
         buttonPanel.add(button1);
         buttonPanel.add(button2);
         buttonPanel.add(button3);
         buttonPanel.add(button4);
+
+        ObjectInputStream in;
+        PrintWriter out;
+
         buttonPanel.setPreferredSize(new Dimension(400,200));
         questionPanel.setPreferredSize(new Dimension(400,400));
         questionArea.setEditable(false);
         questionArea.setPreferredSize(new Dimension(400,200));
 
 
-        try (
-                Socket addressSocket = new Socket(hostName,
-                        portNumber);
-                ObjectInputStream in = new ObjectInputStream(addressSocket.getInputStream());
-                PrintWriter out = new PrintWriter(addressSocket.getOutputStream(), true)
-        ) {
+        try {Socket addressSocket = new Socket(hostName, portNumber);
+                in = new ObjectInputStream(addressSocket.getInputStream());
+                out = new PrintWriter(addressSocket.getOutputStream(), true);
+
             Object fromServer;
             String fromUser;
-
 
             while ((fromServer = in.readObject()) != null) {
                 System.out.println(fromServer.toString());
@@ -71,9 +84,17 @@ public class Client extends JFrame {
                     button4.setText(split[5]);
                 }
 
+                System.out.println(toServer);
+                System.out.println("hej baso");
+
+                if(toServer != null) {
+                    out.println(toServer);
+                }
+
                 BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
                 fromUser = stdIn.readLine();
                 if (fromUser != null) {
+
                     out.println(fromUser);
                 }
             }
@@ -85,6 +106,17 @@ public class Client extends JFrame {
             e.printStackTrace();
         }
 
+    }
+
+    public void actionPerformed (ActionEvent e){
+        if(e.getSource() == button1)
+            out.println(button1.getText());
+        if(e.getSource() == button2)
+            out.println(button2.getText());
+        if(e.getSource() == button3)
+            out.println(button3.getText());
+        if(e.getSource() == button4)
+            out.println(button4.getText());
     }
 
     public static void main(String[] args) {

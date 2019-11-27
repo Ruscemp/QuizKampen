@@ -52,6 +52,7 @@ public class Question implements Serializable {
     public void setCategory(Categories category) {
         this.category = category;
     }
+
     @Override
     public String toString() {
         return this.category + "," +
