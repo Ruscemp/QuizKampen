@@ -12,14 +12,18 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class Client extends JFrame implements ActionListener {
+public class Client extends JFrame implements ActionListener, Runnable {
     String[] split;
+    int loop = 0;
+    Timer timer;
     JPanel panelMain = new JPanel();
     JPanel questionPanel = new JPanel();
     JButton button1 = new JButton();
     JButton button2 = new JButton();
     JButton button3 = new JButton();
     JButton button4 = new JButton();
+    JButton clickedButton;
+    Color defaultColor = button1.getBackground();
     JPanel buttonPanel = new JPanel(new GridLayout(2, 2));
     JTextArea questionArea = new JTextArea();
     JTextArea scoreLabel = new JTextArea();
@@ -112,12 +116,45 @@ public class Client extends JFrame implements ActionListener {
 
     public void addActionListener() {
         for (JButton button : buttonList) {
-            button.addActionListener(l -> out.println(button.getText().trim()));
+            button.addActionListener(l -> {
+                clickedButton = button;
+                if (split.length>6&&clickedButton.getText().trim().equalsIgnoreCase(split[6].trim())){
+                    clickedButton.setBackground(Color.green);
+                    questionArea.setText("Correct!\n");
+                } else if(split.length>6) {
+                    clickedButton.setBackground(Color.RED);
+                    questionArea.setText("False!\n");
+                }
+                if (split.length>6){
+                    timer = new Timer(1000, this::changeColor);
+                    timer.setInitialDelay(0);
+                    timer.start();
+                } else {
+                    out.println(clickedButton.getText().trim());
+                }
+            });
         }
+    }
+
+    private void changeColor(ActionEvent actionEvent) {
+        if (loop == 5){
+            timer.setRepeats(false);
+            clickedButton.setBackground(defaultColor);
+            out.println(clickedButton.getText().trim());
+            loop = 0;
+        }else if(timer.isRepeats()){
+            String[] split2 = questionArea.getText().split("\n");
+            questionArea.setText(split2[0]+"\nNext Question in: "+(5-loop)+" seconds!");
+        }
+        loop++;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
+    }
+
+    @Override
+    public void run() {
     }
 }
