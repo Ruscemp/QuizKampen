@@ -32,9 +32,9 @@ public class Client extends JFrame implements ActionListener, Runnable {
     PrintWriter out;
 
 
-    Client() throws IOException {
+    Client() {
         String hostName = "localhost";
-        int portNumber = 11111;
+        int portNumber = 11121;
 
         add(panelMain, BorderLayout.NORTH);
         add(questionPanel, BorderLayout.CENTER);
@@ -76,11 +76,11 @@ public class Client extends JFrame implements ActionListener, Runnable {
             while ((fromServer = in.readObject()) != null) {
                 System.out.println(fromServer.toString());
                  if (fromServer.toString().contains(":")){
-                    String[] s = fromServer.toString().split(";");
-                    scoreLabel.setText(s[0]);
+                    split = fromServer.toString().split(";");
+                    scoreLabel.setText(split[0]);
                     questionPanel.updateUI();
                     buttonPanel.updateUI();
-                    if (s.length>1&&s[1].equals("OVER")){
+                    if (split.length>1&&split[1].equals("OVER")){
                         disableButtons();
                         JOptionPane.showConfirmDialog(null, "Game Is Over\n"+scoreLabel.getText(), "Game Over", JOptionPane.DEFAULT_OPTION);
                         System.exit(0);

@@ -9,7 +9,7 @@ public class ServerListener {
 
     public static void main(String[] args) {
 
-        try (ServerSocket serverSocket = new ServerSocket(11111)) {
+        try (ServerSocket serverSocket = new ServerSocket(11121)) {
             while (true) {
                 ClientHandler player1handler = new ClientHandler(serverSocket.accept(),0);
                 ClientHandler player2handler = new ClientHandler(serverSocket.accept(), 1);
