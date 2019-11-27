@@ -21,6 +21,7 @@ public class ClientHandler extends Thread {
     private int numberOfQuestions;
     boolean gameOver;
     boolean roundOver;
+    boolean exit;
     BufferedReader in;
     ObjectOutputStream out;
     String category;
@@ -35,12 +36,13 @@ public class ClientHandler extends Thread {
         in = new BufferedReader(new InputStreamReader(player.getInputStream()));
         out = new ObjectOutputStream(player.getOutputStream());
         score = 0;
+        exit = false;
     }
 
     @Override
     public void run() {
         try {
-            while (true) {
+            while (!exit) {
                 while (yourTurn) {
                     if (chooseCategory) {
                         category = sendCategories();
@@ -57,7 +59,9 @@ public class ClientHandler extends Thread {
                         continue;
                     }
                     opponentsTurn();
-                    out.writeObject("END");
+                    if (!gameOver){
+                        out.writeObject("END");
+                    }
                     break;
                 }
                 Thread.sleep(1000);

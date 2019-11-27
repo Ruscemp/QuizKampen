@@ -75,7 +75,17 @@ public class Client extends JFrame implements ActionListener, Runnable {
             disableButtons();
             while ((fromServer = in.readObject()) != null) {
                 System.out.println(fromServer.toString());
-                if (fromServer.toString().contains(";")) {
+                 if (fromServer.toString().contains(":")){
+                    String[] s = fromServer.toString().split(";");
+                    scoreLabel.setText(s[0]);
+                    questionPanel.updateUI();
+                    buttonPanel.updateUI();
+                    if (s.length>1&&s[1].equals("OVER")){
+                        disableButtons();
+                        JOptionPane.showConfirmDialog(null, "Game Is Over\n"+scoreLabel.getText(), "Game Over", JOptionPane.DEFAULT_OPTION);
+                        System.exit(0);
+                    }
+                }else if (fromServer.toString().contains(";")) {
                     enableButtons();
                     split = fromServer.toString().split(";");
                     questionArea.setText(split[1]);
@@ -83,10 +93,6 @@ public class Client extends JFrame implements ActionListener, Runnable {
                     button2.setText(split[3]);
                     button3.setText(split[4]);
                     button4.setText(split[5]);
-                    questionPanel.updateUI();
-                    buttonPanel.updateUI();
-                } else if (fromServer.toString().contains(":")){
-                    scoreLabel.setText(fromServer.toString());
                     questionPanel.updateUI();
                     buttonPanel.updateUI();
                 }else if(fromServer.toString().equals("END")) {
@@ -131,7 +137,7 @@ public class Client extends JFrame implements ActionListener, Runnable {
                     questionArea.setText("False!\n");
                 }
                 if (split.length>6){
-                    timer = new Timer(1000, this::changeColor);
+                    timer = new Timer(100, this::changeColor);
                     timer.setInitialDelay(0);
                     timer.start();
                 } else {

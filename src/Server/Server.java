@@ -22,8 +22,10 @@ public class Server extends Thread {
             bla = "2";
             if (player1.roundOver && player2.roundOver)
                 roundIsOver();
-            if (player1.gameOver && player2.gameOver)
+            if (player1.gameOver && player2.gameOver){
                 gameIsOver();
+                break;
+            }
         }
     }
 
@@ -45,8 +47,10 @@ public class Server extends Thread {
         player1Score = player1.sendScorePoints();
         player2Score = player2.sendScorePoints();
         calculateEndResults(player1Score, player2Score);
-        player1.sendMessage(scoreBoard);
-        player2.sendMessage(scoreBoard);
+        player1.sendMessage(scoreBoard+";OVER");
+        player2.sendMessage(scoreBoard+";OVER");
+        player1.exit = true;
+        player2.exit = true;
         try {
             Thread.sleep(999999);
         } catch (InterruptedException e) {
