@@ -12,13 +12,13 @@ import java.util.List;
 public class ClientHandler extends Thread {
     private Socket player;
     List<Question> questionList = new ArrayList<Question>();
-    boolean yourTurn;
     private ClientHandler opponent;
     private int counterChooseCategory;
     boolean chooseCategory = true;
     private int score;
     private int numberOfRounds;
     private int numberOfQuestions;
+    boolean yourTurn;
     boolean gameOver;
     boolean roundOver;
     boolean exit;
@@ -50,6 +50,9 @@ public class ClientHandler extends Thread {
                     }
                     opponent.setQuestionList(questionList);
                     startQuestionRound();
+                    if (!gameOver){
+                        out.writeObject("END");
+                    }
                     if (numberOfRounds == 0) {
                         this.gameOver = true;
                     }
@@ -59,9 +62,6 @@ public class ClientHandler extends Thread {
                         continue;
                     }
                     opponentsTurn();
-                    if (!gameOver){
-                        out.writeObject("END");
-                    }
                     break;
                 }
                 Thread.sleep(1000);

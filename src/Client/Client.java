@@ -70,7 +70,6 @@ public class Client extends JFrame implements ActionListener, Runnable {
             out = new PrintWriter(addressSocket.getOutputStream(), true);
 
             Object fromServer;
-            String fromUser;
 
             disableButtons();
             while ((fromServer = in.readObject()) != null) {

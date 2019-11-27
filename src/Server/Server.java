@@ -1,13 +1,13 @@
 package Server;
 
 public class Server extends Thread {
-    ClientHandler player1;
-    ClientHandler player2;
-    int player1Score;
-    int player2Score;
-    String scoreBoard;
-    String roundScore;
-    String bla;
+    private ClientHandler player1;
+    private ClientHandler player2;
+    private int player1Score;
+    private int player2Score;
+    private String scoreBoard;
+    private String roundScore;
+    private String serverRunning;
 
     Server(ClientHandler player1, ClientHandler player2) {
         this.player1 = player1;
@@ -19,7 +19,7 @@ public class Server extends Thread {
     @Override
     public void run() {
         while (true) {
-            bla = "2";
+            serverRunning = "Yes";
             if (player1.roundOver && player2.roundOver)
                 roundIsOver();
             if (player1.gameOver && player2.gameOver){
