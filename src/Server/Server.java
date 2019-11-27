@@ -7,6 +7,7 @@ public class Server extends Thread {
     int player2Score;
     String scoreBoard;
     String roundScore;
+    String bla;
 
     Server(ClientHandler player1, ClientHandler player2) {
         this.player1 = player1;
@@ -18,7 +19,7 @@ public class Server extends Thread {
     @Override
     public void run() {
         while (true) {
-            System.out.println("Game in Progress");
+            bla = "2";
             if (player1.roundOver && player2.roundOver)
                 roundIsOver();
             if (player1.gameOver && player2.gameOver)

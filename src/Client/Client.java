@@ -45,10 +45,12 @@ public class Client extends JFrame implements ActionListener {
         buttonPanel.add(button3);
         buttonPanel.add(button4);
 
+        questionArea.setLineWrap(true);
+
         buttonPanel.setPreferredSize(new Dimension(400, 200));
         questionPanel.setPreferredSize(new Dimension(400, 400));
         questionArea.setEditable(false);
-        questionArea.setPreferredSize(new Dimension(400, 200));
+        questionArea.setPreferredSize(new Dimension(380, 200));
 
         buttonList.add(button1);
         buttonList.add(button2);
@@ -66,8 +68,6 @@ public class Client extends JFrame implements ActionListener {
             Object fromServer;
             String fromUser;
 
-
-
             while ((fromServer = in.readObject()) != null) {
                 System.out.println(fromServer.toString());
                 if (fromServer.toString().contains(",")) {
@@ -77,8 +77,12 @@ public class Client extends JFrame implements ActionListener {
                     button2.setText(split[3]);
                     button3.setText(split[4]);
                     button4.setText(split[5]);
+                    questionPanel.updateUI();
+                    buttonPanel.updateUI();
                 } else if (fromServer.toString().contains(":")){
                     scoreLabel.setText(fromServer.toString());
+                    questionPanel.updateUI();
+                    buttonPanel.updateUI();
                 }
                 else {
                     split = fromServer.toString().split("\n");
@@ -87,13 +91,10 @@ public class Client extends JFrame implements ActionListener {
                     button2.setText(split[3]);
                     button3.setText(split[4]);
                     button4.setText(split[5]);
+                    questionArea.setText("Choose a category!");
+                    questionPanel.updateUI();
+                    buttonPanel.updateUI();
                 }
-
-//                BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-//                fromUser = stdIn.readLine();
-//                if (fromUser != null) {
-//                    out.println(fromUser);
-//                }
             }
         } catch (IOException e) {
             e.printStackTrace();
