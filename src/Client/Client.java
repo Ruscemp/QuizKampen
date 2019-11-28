@@ -136,7 +136,7 @@ public class Client extends JFrame implements ActionListener, Runnable {
                     questionArea.setText("False!\n");
                 }
                 if (split.length>6){
-                    timer = new Timer(100, this::changeColor);
+                    timer = new Timer(1000, this::changeColor);
                     timer.setInitialDelay(0);
                     timer.start();
                 } else {
