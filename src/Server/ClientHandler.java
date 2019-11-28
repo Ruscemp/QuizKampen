@@ -134,7 +134,7 @@ public class ClientHandler extends Thread {
             String s;
             inputLine = in.readLine();
             System.out.println(inputLine);
-            if (inputLine.trim().equalsIgnoreCase(questionList.get(i).correctAnswer.trim())) {
+            if (!gameOver&&inputLine.trim().equalsIgnoreCase(questionList.get(i).correctAnswer.trim())) {
                 score++;
                 System.out.println("Score +\nScore: "+score);
             }
